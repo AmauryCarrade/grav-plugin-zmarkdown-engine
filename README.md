@@ -1,7 +1,5 @@
 # ZMarkdown Engine Plugin
 
-**This README.md file should be modified to describe the features, installation, configuration, and general usage of this plugin.**
-
 The **ZMarkdown Engine** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Allows to use the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown) to parse the markdown.
 
 **Warning**: this plugin does not includes ZMarkdown: it must be installed separatly.

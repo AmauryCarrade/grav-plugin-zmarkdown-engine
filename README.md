@@ -47,7 +47,9 @@ Note that if you use the admin plugin, a file with your configuration, and named
 
 ## Usage
 
-For this plugin to work, you must have a ZMarkdown server running and accessible from Grav's backend. Then, fill the `zmd_server` configuration option (using the Admin plugin or the yml file), and _disable the bluit-in Markdown processing_ in the `system.yml` configuration file.
+For this plugin to work, you must have a ZMarkdown server running and accessible from Grav's backend. Then, fill the `zmd_server` configuration option (using the Admin plugin or the yml file). Now, the engine is ready to run.
+
+The last thing to do is to tell Grav (and this plugin) to actually use this engine. To do so, you can either enable it globally, by disabling the `markdown` processor and adding a new `zmarkdown` set to `true`, in the `system.yaml` file, as below:
 
 ```yaml
 pages:
@@ -55,7 +57,19 @@ pages:
   process:
     markdown: false
     twig: false
+    zmarkdown: true
 ```
+
+…or configure it per page by adding something like this in the page's frontmatter.
+
+```yaml
+process:
+    zmarkdown: true
+    markdown: false
+    twig: false
+```
+
+If you use the admin plugin, you'll be able to change that using the page or system configuration forms—a “ZMarkdown” option is added to the _Process_ fields in both system config and page forms.
 
 ## Credits
 
@@ -63,5 +77,4 @@ This plugin uses (obviously) the [ZMarkdown engine](https://github.com/zestedesa
 
 ## To Do
 
-- [ ] We should use ZMD only on pages without the standard markdown enabled. Or add (in the system.yml and in the admin) a process option for ZMD, so we can use either ZMD, Parsedown, and/or Twig, globally or per-page.
 - [ ] Currently, images URL are supported, but not links, as the functions into `Excerpts` does not really support anything but images to convert HTML tags to Parsedown excerpts. So special links (relative, by folder, or special attributes) will not work. We should re-write the HTML-to-excerpt converter to support tags with content and sub-tags (or use Parsedown for that, if possible).

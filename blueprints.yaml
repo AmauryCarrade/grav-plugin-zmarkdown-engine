@@ -1,15 +1,17 @@
-name: Z Markdown Engine
+name: ZMarkdown Engine
 version: 0.1.0
-description: Allows to use the ZMarkdown engine to parse the markdown. Warning: does not includes ZMarkdown: it must be installed separatly.
-icon: plug
+description: |
+  Allows to use the ZMarkdown engine to parse the markdown.
+  **Warning**: does not includes [ZMarkdown](https://github.com/zestedesavoir/zmarkdown). It must be installed separatly.
+icon: file-text-o
 author:
   name: Amaury Carrade
   email: amaury@carrade.eu
-homepage: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine
-demo: http://demo.yoursite.com
+homepage: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine
+demo: https://nebulius.org
 keywords: grav, plugin, etc
-bugs: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine/issues
-docs: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine/blob/develop/README.md
+bugs: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine/issues
+docs: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine/blob/develop/README.md
 license: MIT
 
 form:
@@ -25,7 +27,7 @@ form:
         0: Disabled
       validate:
         type: bool
-    text_var:
+    zmd_server:
       type: text
-      label: Text Variable
-      help: Text to add to the top of a page
+      label: Path to the ZMarkdown server
+      help: "The path to the ZMarkdown parsing server, with the port and without trailing slash. Hint: the default port is 27272."

@@ -1,5 +1,5 @@
 name: ZMarkdown Engine
-version: 0.1.0
+version: 1.0.0
 description: |
   Allows to use the ZMarkdown engine to parse the markdown.
   **Warning**: does not includes [ZMarkdown](https://github.com/zestedesavoir/zmarkdown). It must be installed separatly.

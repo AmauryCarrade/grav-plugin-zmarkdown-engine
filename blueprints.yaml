@@ -1,0 +1,31 @@
+name: Z Markdown Engine
+version: 0.1.0
+description: Allows to use the ZMarkdown engine to parse the markdown. Warning: does not includes ZMarkdown: it must be installed separatly.
+icon: plug
+author:
+  name: Amaury Carrade
+  email: amaury@carrade.eu
+homepage: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine
+demo: http://demo.yoursite.com
+keywords: grav, plugin, etc
+bugs: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine/issues
+docs: https://github.com/amaury-carrade/grav-plugin-z-markdown-engine/blob/develop/README.md
+license: MIT
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+    text_var:
+      type: text
+      label: Text Variable
+      help: Text to add to the top of a page

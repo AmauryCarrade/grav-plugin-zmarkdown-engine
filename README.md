@@ -2,7 +2,9 @@
 
 **This README.md file should be modified to describe the features, installation, configuration, and general usage of this plugin.**
 
-The **ZMarkdown Engine** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Allows to use the ZMarkdown engine to parse the markdown. Warning: does not includes ZMarkdown: it must be installed separatly.
+The **ZMarkdown Engine** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Allows to use the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown) to parse the markdown.
+
+**Warning**: this plugin does not includes ZMarkdown: it must be installed separatly.
 
 ## Installation
 
@@ -14,11 +16,11 @@ The simplest way to install this plugin is via the [Grav Package Manager (GPM)](
 
     bin/gpm install zmarkdown-engine
 
-This will install the Z Markdown Engine plugin into your `/user/plugins` directory within Grav. Its files can be found under `/your/site/grav/user/plugins/zmarkdown-engine`.
+This will install the ZMarkdown Engine plugin into your `/user/plugins` directory within Grav. Its files can be found under `/your/site/grav/user/plugins/zmarkdown-engine`.
 
 ### Manual Installation
 
-To install this plugin, just download the zip version of this repository and unzip it under `/your/site/grav/user/plugins`. Then, rename the folder to `zmarkdown-engine`. You can find these files on [GitHub](https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine) or via [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
+To install this plugin, just download the zip version of this repository and unzip it under `/your/site/grav/user/plugins`. Then, rename the folder to `zmarkdown-engine`. You can find these files on [GitHub](https://github.com/Nebulius/grav-plugin-zmarkdown-engine) or via [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
 
 You should now have all the plugin files under
 
@@ -38,19 +40,30 @@ Here is the default configuration and an explanation of available options:
 
 ```yaml
 enabled: true
+zmd_server: http://127.0.0.1:27272
 ```
 
-Note that if you use the admin plugin, a file with your configuration, and named z-markdown-engine.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
+The `zmd_server` option must contains a link to the root of the zmarkdown engine server, with the port and without trailing slash. Hint: the default port is 27272.
+
+Note that if you use the admin plugin, a file with your configuration, and named zmarkdown-engine.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
 
 ## Usage
 
-**Describe how to use the plugin.**
+For this plugin to work, you must have a ZMarkdown server running and accessible from Grav's backend. Then, fill the `zmd_server` configuration option (using the Admin plugin or the yml file), and _disable the bluit-in Markdown processing_ in the `system.yml` configuration file.
+
+```yaml
+pages:
+  ...
+  process:
+    markdown: false
+    twig: false
+```
 
 ## Credits
 
-**Did you incorporate third-party code? Want to thank somebody?**
+This plugin uses (obviously) the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown), initially developped for Zeste de Savoir. Also, thanks to the developers of [SimpleHTMLDOM](http://simplehtmldom.sourceforge.net/), used to backport the images processing to the Markdown parsed by ZMD.
 
 ## To Do
 
-- [ ] Future plans, if any
-
+- [ ] We should use ZMD only on pages without the standard markdown enabled. Or add (in the system.yml and in the admin) a process option for ZMD, so we can use either ZMD, Parsedown, and/or Twig, globally or per-page.
+- [ ] Currently, images URL are supported, but not links, as the functions into `Excerpts` does not really support anything but images to convert HTML tags to Parsedown excerpts. So special links (relative, by folder, or special attributes) will not work. We should re-write the HTML-to-excerpt converter to support tags with content and sub-tags (or use Parsedown for that, if possible).

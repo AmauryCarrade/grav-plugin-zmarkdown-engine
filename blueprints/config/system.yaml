@@ -1,0 +1,25 @@
+@extends:
+    '@parent'
+
+form:
+    validation: loose
+    fields:
+
+        content:
+            type: section
+            title: PLUGIN_ADMIN.CONTENT
+            underline: true
+
+            fields:
+                pages.process:
+                    type: checkboxes
+                    default: [markdown: true, zmarkdown: true, twig: true]
+                    options:
+                        markdown: Markdown
+                        zmarkdown: ZMarkdown
+                        twig: Twig
+                    use: keys
+                myfield:
+                    type: text
+                    label: My Field
+

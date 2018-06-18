@@ -13,6 +13,11 @@ use RocketTheme\Toolbox\Event\Event;
  */
 class ZMarkdownEnginePlugin extends Plugin
 {
+    // Enables blueprints for the system & page admins.
+    public $features = [
+        'blueprints' => 1000,
+    ];
+
     /**
      * @return array
      *
@@ -26,7 +31,7 @@ class ZMarkdownEnginePlugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => ['onPluginsInitialized', 0],
         ];
     }
 
@@ -35,11 +40,10 @@ class ZMarkdownEnginePlugin extends Plugin
      */
     public function onPluginsInitialized()
     {
-        // Don't proceed if we are in the admin plugin
         if ($this->isAdmin()) return;
 
         $this->enable([
-            'onPageContentProcessed' => ['onPageContentProcessed', 0]
+            'onPageContentProcessed' => ['onPageContentProcessed', 0],
         ]);
     }
 
@@ -59,6 +63,22 @@ class ZMarkdownEnginePlugin extends Plugin
 
         // If the plugin is not active (either global or on page), exit.
         if (!$this->active) return;
+
+        // We now check if we should render the content using ZMD.
+        $header = $page->header();
+        $should_process_zmarkdown = isset($header->process) && isset($header->process['zmarkdown']) ? (bool) $header->process['zmarkdown'] : null;
+
+        if ($should_process_zmarkdown === null)
+        {
+            $should_process_zmarkdown = $this->grav['config']->get('system.pages.process.zmarkdown');
+
+            if ($should_process_zmarkdown === null)
+            {
+                $should_process_zmarkdown = false;
+            }
+        }
+
+        if (!$should_process_zmarkdown) return;
 
         // Updates the content with the rendered ZMD.
         $page->setRawContent($this->renderZMarkdown($page));

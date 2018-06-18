@@ -7,11 +7,11 @@ icon: file-text-o
 author:
   name: Amaury Carrade
   email: amaury@carrade.eu
-homepage: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine
+homepage: https://github.com/Nebulius/grav-plugin-zmarkdown-engine
 demo: https://nebulius.org
 keywords: grav, plugin, etc
-bugs: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine/issues
-docs: https://github.com/amaury-carrade/grav-plugin-zmarkdown-engine/blob/develop/README.md
+bugs: https://github.com/Nebulius/grav-plugin-zmarkdown-engine/issues
+docs: https://github.com/Nebulius/grav-plugin-zmarkdown-engine/blob/master/README.md
 license: MIT
 
 form:

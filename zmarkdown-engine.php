@@ -1,8 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
-use \DOMDocument;
-
+use Grav\Common\Page\Page;
 use Grav\Common\Plugin;
 use Grav\Common\Helpers\Excerpts;
 use RocketTheme\Toolbox\Event\Event;
@@ -84,7 +83,7 @@ class ZMarkdownEnginePlugin extends Plugin
         $page->setRawContent($this->renderZMarkdown($page));
     }
 
-    private function renderZMarkdown($page)
+    private function renderZMarkdown(Page $page)
     {
         require_once(__DIR__ . '/libs/simple_html_dom.php');
 
@@ -117,12 +116,16 @@ class ZMarkdownEnginePlugin extends Plugin
 
         // Then, we have some post-processing to do.
         // Grav allows to pass options to process images, and links, in Markdown. But these are processed using
-        // Parsedown, and we removed it entierely. So we parse the generated HTML to find all images and links
+        // Parsedown, and we removed it entirely. So we parse the generated HTML to find all images and links
         // to process them manually.
 
         // Arguments: html, lowercase, forceTagsClosed, charset (default = UTF-8), ignore line breaks.
         // We want to switch the last one as it breaks the code blocks.
         $html_tree = str_get_html($html, true, true, DEFAULT_TARGET_CHARSET, false);
+
+        // If we can't parse it, we don't parse it. This may happen if the page is empty,
+        // or if ZMD returns bad HTML (but it will very likely be the first).
+        if (!$html_tree) return $html;
 
         // The DOMDocument does not likes the HTML5 or MathML tags. This silents
         // its errors. We don't use it directly, but Excerpts::getExcerptFromHtml do.

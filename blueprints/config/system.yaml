@@ -19,7 +19,3 @@ form:
                         zmarkdown: ZMarkdown
                         twig: Twig
                     use: keys
-                myfield:
-                    type: text
-                    label: My Field
-

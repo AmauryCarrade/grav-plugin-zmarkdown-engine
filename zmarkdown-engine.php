@@ -42,7 +42,7 @@ class ZMarkdownEnginePlugin extends Plugin
         if ($this->isAdmin()) return;
 
         $this->enable([
-            'onPageContentProcessed' => ['onPageContentProcessed', 0],
+            'onPageContentProcessed' => ['onPageContentProcessed', 101010],
         ]);
     }
 

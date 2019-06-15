@@ -3,13 +3,15 @@
 
 form:
     fields:
-        content:
+        system_tabs:
             fields:
-                pages.process:
-                    type: checkboxes
-                    default: [markdown: true, zmarkdown: true, twig: true]
-                    options:
-                        markdown: Markdown
-                        zmarkdown: ZMarkdown
-                        twig: Twig
-                    use: keys
+                content:
+                    fields:
+                        pages.process:
+                            type: checkboxes
+                            default: [markdown: true, zmarkdown: true, twig: true]
+                            options:
+                                markdown: Markdown
+                                zmarkdown: ZMarkdown
+                                twig: Twig
+                            use: keys

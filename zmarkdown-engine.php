@@ -131,7 +131,8 @@ class ZMarkdownEnginePlugin extends Plugin
         // its errors. We don't use it directly, but Excerpts::getExcerptFromHtml do.
         libxml_use_internal_errors(true);
 
-        foreach ($html_tree->find('img') as $element)
+	// Just in case: only images with src attributes.
+        foreach ($html_tree->find('img[src]') as $element)
         {
             $element->outertext = Excerpts::processImageHtml($element->outertext, $page);
         }

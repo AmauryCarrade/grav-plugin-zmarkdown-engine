@@ -1,17 +1,17 @@
 @extends:
-   '@parent'
+    '@parent'
 
- form:
-   fields:
-     system_tabs:
-       fields:
-         content:
-           fields:
-             pages.process:
-               type: checkboxes
-               default: [markdown: true, zmarkdown: true, twig: true]
-               options:
-                 markdown: Markdown
-                 zmarkdown: ZMarkdown
-                 twig: Twig
-               use: keys
+form:
+  fields:
+    system_tabs:
+      fields:
+        content:
+          fields:
+            pages.process:
+              type: checkboxes
+              default: [markdown: true, zmarkdown: true, twig: true]
+              options:
+                markdown: Markdown
+                zmarkdown: ZMarkdown
+                twig: Twig
+              use: keys

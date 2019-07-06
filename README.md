@@ -2,7 +2,7 @@
 
 The **ZMarkdown Engine** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Allows to use the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown) to parse the markdown.
 
-**Warning**: this plugin does not includes ZMarkdown: it must be installed separatly.
+**Warning**: this plugin does not includes ZMarkdown: it must be installed separately.
 
 ## Installation
 
@@ -29,6 +29,17 @@ You should now have all the plugin files under
 ### Admin Plugin
 
 If you use the admin plugin, you can install directly through the admin plugin by browsing the `Plugins` tab and clicking on the `Add` button.
+
+### ZMarkdown installation
+
+You can install ZMarkdown in any way, but a simple one is [to use NPM](https://www.npmjs.com/package/zmarkdown):
+
+```bash
+mkdir zmarkdown
+cd zmarkdown
+npm install zmarkdown
+npm run server
+```
 
 ## Configuration
 
@@ -74,7 +85,3 @@ If you use the admin plugin, you'll be able to change that using the page or sys
 ## Credits
 
 This plugin uses (obviously) the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown), initially developped for Zeste de Savoir. Also, thanks to the developers of [SimpleHTMLDOM](http://simplehtmldom.sourceforge.net/), used to backport the images processing to the Markdown parsed by ZMD.
-
-## To Do
-
-- [ ] Currently, images URL are supported, but not links, as the functions into `Excerpts` does not really support anything but images to convert HTML tags to Parsedown excerpts. So special links (relative, by folder, or special attributes) will not work. We should re-write the HTML-to-excerpt converter to support tags with content and sub-tags (or use Parsedown for that, if possible).

@@ -1,5 +1,5 @@
 name: ZMarkdown Engine
-version: 1.0.1
+version: 1.1.0
 description: |
   Allows to use the ZMarkdown engine to parse the markdown.
   **Warning**: does not includes [ZMarkdown](https://github.com/zestedesavoir/zmarkdown). It must be installed separatly.
@@ -30,4 +30,6 @@ form:
     zmd_server:
       type: text
       label: Path to the ZMarkdown server
-      help: "The path to the ZMarkdown parsing server, with the port and without trailing slash. Hint: the default port is 27272."
+      help: |
+        The path to the ZMarkdown parsing server, with the port and without trailing slash.
+        Hint: the default port is 27272.

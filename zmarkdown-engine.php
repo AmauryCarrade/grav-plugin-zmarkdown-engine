@@ -1,6 +1,7 @@
 <?php
 namespace Grav\Plugin;
 
+use DOMDocument;
 use Grav\Common\Page\Page;
 use Grav\Common\Plugin;
 use Grav\Common\Helpers\Excerpts;
@@ -109,7 +110,7 @@ class ZMarkdownEnginePlugin extends Plugin
 
         if (!$result && !empty($content))
         {
-            return '<div class="custom-block custom-block-error"><div class="custom-block-content"><p><strong>Unable to parse Markdown.</strong><br />Please check that the zmarkdown server is reachable and does work.</p></div></div>' . "\n\n" . $content;
+            return '<div class="custom-block custom-block-error"><div class="custom-block-heading">Unable to parse Markdown</div><div class="custom-block-content">Please check that the zmarkdown server is reachable and does work.</div></div>' . "\n\n" . $content;
         }
 
         $html = json_decode($result)[0];
@@ -131,33 +132,108 @@ class ZMarkdownEnginePlugin extends Plugin
         // its errors. We don't use it directly, but Excerpts::getExcerptFromHtml do.
         libxml_use_internal_errors(true);
 
-	// Just in case: only images with src attributes.
+	    // Just in case: only images with src attributes.
         foreach ($html_tree->find('img[src]') as $element)
         {
-            $element->outertext = Excerpts::processImageHtml($element->outertext, $page);
+            $element->outertext = $this->processImageHTML($element->outertext, $page);
         }
 
-        // We would have to process links too, but Grav's getExcerptFromHtml actually does not
+        // We process links too. Only problem: Grav's getExcerptFromHtml actually does not
         // support tags with content (content not saved, so the re-constructed tag is always
-        // empty). We could fix that but in the meantime, links are not processed.
-        /*
+        // empty). So, we build the excerpt manually.
         foreach ($html_tree->find('a[!aria-hidden]') as $element)
         {
             // Skips footnotes
             if (strpos($element->class, 'footnote-ref') !== false) continue;
 
-            $element_html = $element->outertext;
-
-            $excerpt = Excerpts::getExcerptFromHtml($element_html, 'a');
-            $excerpt = Excerpts::processLinkExcerpt($excerpt, $page, 'link');
-
-            $element->outertext = Excerpts::getHtmlFromExcerpt($excerpt);
+            $element->outertext = $this->processLinkHTML($element->outertext, $page);
         }
-        */
 
         $html = $html_tree->save();
         $html_tree->clear();
 
         return $html;
+    }
+
+    private function processImageHTML($html, $page)
+    {
+        $excerpt = $this->getExcerptFromHtml($html, 'img');
+
+        $original_src = $excerpt['element']['attributes']['src'];
+        $excerpt['element']['attributes']['href'] = $original_src;
+
+        $excerpt = Excerpts::processLinkExcerpt($excerpt, $page, 'image');
+
+        $excerpt['element']['attributes']['src'] = $excerpt['element']['attributes']['href'];
+        unset($excerpt['element']['attributes']['href']);
+
+        $excerpt = Excerpts::processImageExcerpt($excerpt, $page);
+
+        $excerpt['element']['attributes']['data-src'] = $original_src;
+
+        return Excerpts::getHtmlFromExcerpt($excerpt);
+    }
+
+    private function processLinkHTML($html, $page)
+    {
+        // Naive solution, assuming the method is working (it's not)
+        // $excerpt = Excerpts::getExcerptFromHtml($element_html, 'a');
+
+        $excerpt = $this->getExcerptFromHTML($html, 'a');
+
+        if ($excerpt != null)
+        {
+            return Excerpts::getHtmlFromExcerpt(Excerpts::processLinkExcerpt($excerpt, $page, 'link'));
+        }
+        else return $html;
+    }
+
+    /**
+     * Creates an excerpt from an HTML string and a tag name.
+     *
+     * The last tag encountered of the right type in the string will be
+     * returned as an excerpt formatted as below:
+     *
+     * element
+     *    name: string
+     *    attributes: array (k/v)
+     *    text: string
+     *
+     * Code borrowed from Excerpts::getExcerptFromHtml, but with text content
+     * in the excerpt, and correct encoding support.
+     *
+     * @param $html string The HTML string
+     * @param $tag string The HTML tag name to extract
+     * @param string $encoding The encoding to use (defaults to UTF8)
+     *
+     * @return array|null An excerpt created from the given HTML string,
+     *                    or null if no tag with this name was found.
+     */
+    private function getExcerptFromHTML($html, $tag, $encoding = 'UTF8')
+    {
+        $doc = new DOMDocument('1.0', $encoding);
+        $doc->loadHTML($html);
+        $links = $doc->getElementsByTagName($tag);
+        $excerpt = null;
+
+        foreach ($links as $link)
+        {
+            $attributes = [];
+
+            foreach ($link->attributes as $name => $value)
+            {
+                $attributes[$name] = $encoding == 'UTF8' ? utf8_decode($value->value) : $value->value;
+            }
+
+            $excerpt = [
+                'element' => [
+                    'name'       => $link->tagName,
+                    'attributes' => $attributes,
+                    'text'       => $encoding == 'UTF8' ? utf8_decode($link->textContent) : $link->textContent
+                ]
+            ];
+        }
+
+        return $excerpt;
     }
 }

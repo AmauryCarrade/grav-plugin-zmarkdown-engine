@@ -9,9 +9,9 @@ form:
           fields:
             pages.process:
               type: checkboxes
-              default: [markdown: true, zmarkdown: true, twig: true]
+              default: [markdown: false, zmarkdown: true, twig: false]
               options:
                 markdown: Markdown
-                zmarkdown: ZMarkdown
+                zmarkdown: zmarkdown
                 twig: Twig
               use: keys

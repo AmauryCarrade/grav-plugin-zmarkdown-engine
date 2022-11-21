@@ -16,6 +16,6 @@ form:
                     zmarkdown: true
                   options:
                     markdown: Markdown
-                    zmarkdown: ZMarkdown
+                    zmarkdown: zmarkdown
                     twig: Twig
                   use: keys

@@ -2,19 +2,19 @@
 
 The **ZMarkdown Engine** Plugin is for [Grav CMS](http://github.com/getgrav/grav). Allows to use the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown) to parse the markdown.
 
-**Warning**: this plugin does not includes ZMarkdown: it must be installed separately.
+**Warning**: this plugin does not include zmarkdown: it must be installed separately.
 
 ## Installation
 
-Installing the ZMarkdown Engine plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
+Installing the zmarkdown engine plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
 
 ### GPM Installation (Preferred)
 
-The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's terminal (also called the command line).  From the root of your Grav install type:
+The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's terminal (also called the command line). From the root of your Grav installation, type:
 
     bin/gpm install zmarkdown-engine
 
-This will install the ZMarkdown Engine plugin into your `/user/plugins` directory within Grav. Its files can be found under `/your/site/grav/user/plugins/zmarkdown-engine`.
+This will install the zmarkdown engine plugin into your `/user/plugins` directory within Grav. Its files can be found under `/your/site/grav/user/plugins/zmarkdown-engine`.
 
 ### Manual Installation
 
@@ -32,7 +32,7 @@ If you use the admin plugin, you can install directly through the admin plugin b
 
 ### ZMarkdown installation
 
-You can install ZMarkdown in any way, but a simple one is [to use NPM](https://www.npmjs.com/package/zmarkdown):
+You can install zmarkdown in any way, but a simple one is [to use NPM](https://www.npmjs.com/package/zmarkdown):
 
 ```bash
 mkdir zmarkdown
@@ -40,6 +40,8 @@ cd zmarkdown
 npm install zmarkdown
 npm run server
 ```
+
+You can also [deploy zmarkdown with Ansible](https://zestedesavoir.com/billets/3928/integrer-zmarkdown-a-laravel-avec-ansible/) (in French).
 
 ## Configuration
 
@@ -52,7 +54,7 @@ enabled: true
 zmd_server: http://127.0.0.1:27272
 ```
 
-The `zmd_server` option must contains a link to the root of the zmarkdown engine server, with the port and without trailing slash. Hint: the default port is 27272.
+The `zmd_server` option must contain a link to the root of the zmarkdown engine server, with the port and without trailing slash. Hint: the default port is 27272.
 
 Note that if you use the admin plugin, a file with your configuration, and named zmarkdown-engine.yaml will be saved in the `user/config/plugins/` folder once the configuration is saved in the admin.
 
@@ -64,7 +66,7 @@ The last thing to do is to tell Grav (and this plugin) to actually use this engi
 
 ```yaml
 pages:
-  ...
+  # ...
   process:
     markdown: false
     twig: false
@@ -80,8 +82,10 @@ process:
     twig: false
 ```
 
-If you use the admin plugin, you'll be able to change that using the page or system configuration forms—a “ZMarkdown” option is added to the _Process_ fields in both system config and page forms.
+If you use the admin plugin, you'll be able to change that using the page or system configuration forms—a “zmarkdown” option is added to the _Process_ fields in both system config and page forms.
+
+You can use Twig and zmarkdown processing at the same time, but not Markdown and zmarkdown. If both are enabled, Grav Markdown will take precedence.
 
 ## Credits
 
-This plugin uses (obviously) the [ZMarkdown engine](https://github.com/zestedesavoir/zmarkdown), initially developped for Zeste de Savoir. Also, thanks to the developers of [SimpleHTMLDOM](http://simplehtmldom.sourceforge.net/), used to backport the images processing to the Markdown parsed by ZMD.
+This plugin uses (obviously) the [zmarkdown engine](https://github.com/zestedesavoir/zmarkdown), initially developed for Zeste de Savoir. Also, thanks to the developers of [SimpleHTMLDOM](http://simplehtmldom.sourceforge.net/), used to backport images and links processing to zmarkdown.

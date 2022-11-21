@@ -145,6 +145,7 @@ class ZMarkdownEnginePlugin extends Plugin
         {
             // Skips footnotes
             if (strpos($element->class, 'footnote-ref') !== false) continue;
+            if (strpos($element->class, 'footnote-backref') !== false) continue;
 
             $element->outertext = $this->processLinkHTML($element->outertext, $page);
         }
@@ -157,7 +158,7 @@ class ZMarkdownEnginePlugin extends Plugin
 
     private function processImageHTML($html, $page)
     {
-        $excerpt = $this->getExcerptFromHtml($html, 'img');
+        $excerpt = Excerpts::getExcerptFromHtml($html, 'img');
 
         $original_src = $excerpt['element']['attributes']['src'];
         $excerpt['element']['attributes']['href'] = $original_src;
@@ -176,64 +177,12 @@ class ZMarkdownEnginePlugin extends Plugin
 
     private function processLinkHTML($html, $page)
     {
-        // Naive solution, assuming the method is working (it's not)
-        // $excerpt = Excerpts::getExcerptFromHtml($element_html, 'a');
-
-        $excerpt = $this->getExcerptFromHTML($html, 'a');
+        $excerpt = Excerpts::getExcerptFromHtml($html, 'a');
 
         if ($excerpt != null)
         {
             return Excerpts::getHtmlFromExcerpt(Excerpts::processLinkExcerpt($excerpt, $page, 'link'));
         }
         else return $html;
-    }
-
-    /**
-     * Creates an excerpt from an HTML string and a tag name.
-     *
-     * The last tag encountered of the right type in the string will be
-     * returned as an excerpt formatted as below:
-     *
-     * element
-     *    name: string
-     *    attributes: array (k/v)
-     *    text: string
-     *
-     * Code borrowed from Excerpts::getExcerptFromHtml, but with text content
-     * in the excerpt, and correct encoding support.
-     *
-     * @param $html string The HTML string
-     * @param $tag string The HTML tag name to extract
-     * @param string $encoding The encoding to use (defaults to UTF8)
-     *
-     * @return array|null An excerpt created from the given HTML string,
-     *                    or null if no tag with this name was found.
-     */
-    private function getExcerptFromHTML($html, $tag, $encoding = 'UTF8')
-    {
-        $doc = new DOMDocument('1.0', $encoding);
-        $doc->loadHTML($html);
-        $links = $doc->getElementsByTagName($tag);
-        $excerpt = null;
-
-        foreach ($links as $link)
-        {
-            $attributes = [];
-
-            foreach ($link->attributes as $name => $value)
-            {
-                $attributes[$name] = $encoding == 'UTF8' ? utf8_decode($value->value) : $value->value;
-            }
-
-            $excerpt = [
-                'element' => [
-                    'name'       => $link->tagName,
-                    'attributes' => $attributes,
-                    'text'       => $encoding == 'UTF8' ? utf8_decode($link->textContent) : $link->textContent
-                ]
-            ];
-        }
-
-        return $excerpt;
     }
 }
